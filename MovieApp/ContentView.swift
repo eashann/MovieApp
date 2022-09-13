@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @StateObject private var model = MoviesProvider()
+    @State private var searchText = ""
     
     var body: some View {
         NavigationView {
@@ -17,8 +18,9 @@ struct ContentView: View {
                 MovieRow(movie: movie)
                     .listRowSeparator(.hidden)
             }
+            .searchable(text: $searchText)
             .listStyle(.plain)
-            .navigationTitle("Movie List")
+            .navigationTitle("Top Rated Movie List")
             .navigationBarTitleDisplayMode(.large)
         }
     }
