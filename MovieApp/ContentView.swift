@@ -8,14 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @StateObject private var model = MoviesProvider()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView {
+            List(model.movies, id: \.id) { movie in
+                MovieRow(movie: movie)
+                    .listRowSeparator(.hidden)
+            }
+            .listStyle(.plain)
+            .navigationTitle("Movie List")
+            .navigationBarTitleDisplayMode(.large)
         }
-        .padding()
     }
 }
 
