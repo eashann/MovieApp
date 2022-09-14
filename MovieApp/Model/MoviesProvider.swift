@@ -45,7 +45,7 @@ final class MoviesProvider: ObservableObject {
     }
     
     private func searchMovies() {
-        cancellable = searchClient.searchMovie(.topRated)
+        cancellable = searchClient.searchMovie(.topRated, query: queryText)
             .sink(receiveCompletion: { _ in
             }, receiveValue: {
                 self.movies = $0.results.map { MovieViewModel(movie: $0) }

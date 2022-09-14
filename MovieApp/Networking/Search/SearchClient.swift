@@ -20,7 +20,7 @@ final class SearchClient: CombineAPI {
         self.init(configuration: .default)
     }
     
-    func searchMovie(_ searchKind: SearchMovie) -> AnyPublisher<MovieFeedResult, Error> {
-        execute(searchKind.searchRequest, decodingType: MovieFeedResult.self, retries: 2)
+    func searchMovie(_ searchKind: SearchMovie, query: String) -> AnyPublisher<MovieFeedResult, Error> {
+        execute(searchKind.searchRequestUsingComponenet(with: query), decodingType: MovieFeedResult.self, retries: 2)
     }
 }

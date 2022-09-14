@@ -8,18 +8,13 @@
 import Foundation
 
 extension Endpoint {
-    
-    var searchURLComponents: URLComponents {
+    func searchRequestUsingComponenet(with query: String) -> URLRequest {
         var components = URLComponents(string: base)!
         components.path = path
         components.queryItems = [
             .init(name: "api_key", value: themoviedb_apiKey),
-            .init(name: "query", value: "marvel")]
-        return components
-    }
-    
-    var searchRequest: URLRequest {
-        let url = searchURLComponents.url!
+            .init(name: "query", value: "\(query)")]
+        let url = components.url!
         return URLRequest(url: url)
     }
 }
