@@ -15,7 +15,7 @@ final class MoviesProvider: ObservableObject {
     
     // MARK:- Publishers
     @Published var movies: [MovieViewModel] = []
-
+    
     // MARK:- Private properties
     private let client = MovieClient()
     
@@ -24,7 +24,7 @@ final class MoviesProvider: ObservableObject {
             .sink(receiveCompletion: { _ in
                 // Here the actual subscriber is created. As mentioned earlier, the sink-subscriber comes with a closure, that lets us handle the received value when it’s ready from the publisher.
             },
-            receiveValue: {
+                  receiveValue: {
                 self.movies = $0.results.map { MovieViewModel(movie: $0) }
             })
     }

@@ -10,10 +10,8 @@ import Combine
 
 final class MovieClient: CombineAPI {
     
-    // 1
     let session: URLSession
     
-    // 2
     init(configuration: URLSessionConfiguration) {
         self.session = URLSession(configuration: configuration)
     }
@@ -22,7 +20,6 @@ final class MovieClient: CombineAPI {
         self.init(configuration: .default)
     }
     
-    // 3
     func getFeed(_ feedKind: MovieFeed) -> AnyPublisher<MovieFeedResult, Error> {
         execute(feedKind.request, decodingType: MovieFeedResult.self, retries: 2)
     }

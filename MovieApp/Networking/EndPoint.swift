@@ -13,8 +13,14 @@ protocol Endpoint {
     var path: String { get }
 }
 extension Endpoint {
+    
     var apiKey: String {
-        return "api_key=4f0b4d47f39a9bc48fbe25d612f92919"
+        if let path = Bundle.main.path(forResource: "Secrets", ofType: "plist"),
+           let dict = NSDictionary(contentsOfFile: path),
+           let key = dict["APIKey"] as? String {
+            return "api_key=\(key)"
+        }
+        return ""
     }
     
     var urlComponents: URLComponents {

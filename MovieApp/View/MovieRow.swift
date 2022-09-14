@@ -11,7 +11,6 @@ import Combine
 
 struct MovieRow: View {
     
-    // MARK:- Dependency injection
     let movie: MovieViewModel
     
     var body: some View {

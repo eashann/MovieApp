@@ -54,7 +54,7 @@ final class ImageLoader: ObservableObject {
     
     private func loadImageFromCache() -> Bool {
         guard let urlString = urlString,
-        let cacheImage = imageCache.imageForKey(urlString)
+              let cacheImage = imageCache.imageForKey(urlString)
         else { return false }
         image = cacheImage
         return true
