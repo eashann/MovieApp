@@ -10,23 +10,18 @@ import SwiftUI
 struct ContentView: View {
     
     @StateObject private var model = MoviesProvider()
-    @State private var searchText = ""
-    
-    private var movies: [MovieViewModel] {
-        if searchText.isEmpty {
-            return model.movies
-        } else {
-            return model.movies.filter{$0.title.contains(searchText)}
-        }
-    }
+    @State private var queryText = ""
     
     var body: some View {
         NavigationView {
-            List(movies, id: \.id) { movie in
+            List(model.movies, id: \.id) { movie in
                 MovieRow(movie: movie)
                     .listRowSeparator(.hidden)
             }
-            .searchable(text: $searchText, prompt: "Search movie title")
+            .searchable(text: $queryText, prompt: "Search movie title")
+            .onChange(of: queryText, perform: { newValue in
+                model.queryText = queryText
+            })
             .listStyle(.plain)
             .navigationTitle("Top Rated Movie List")
             .navigationBarTitleDisplayMode(.large)
