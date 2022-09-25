@@ -9,18 +9,18 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @StateObject private var model = MoviesProvider()
+    @StateObject private var movieObservableObject = MovieObservable()
     @State private var queryText = ""
     
     var body: some View {
         NavigationView {
-            List(model.movies, id: \.id) { movie in
+            List(movieObservableObject.movies, id: \.id) { movie in
                 MovieRow(movie: movie)
                     .listRowSeparator(.hidden)
             }
             .searchable(text: $queryText, prompt: "Search movie title")
             .onChange(of: queryText, perform: { newValue in
-                model.queryText = queryText
+                movieObservableObject.queryText = queryText
             })
             .listStyle(.plain)
             .navigationTitle("Top Rated Movie List")

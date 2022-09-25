@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class MoviesProvider: ObservableObject {
+final class MovieObservable: ObservableObject {
     
     // MARK:- Subscribers
     private var cancellable: AnyCancellable?
