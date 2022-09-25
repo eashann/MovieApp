@@ -9,8 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @StateObject private var movieObservableObject = MovieObservable()
-    @State private var queryText = ""
+    @State private var queryText: String = ""
+    @StateObject private var movieObservableObject = MovieObservableObject()
     
     var body: some View {
         NavigationView {

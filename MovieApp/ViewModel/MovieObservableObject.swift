@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class MovieObservable: ObservableObject {
+final class MovieObservableObject: ObservableObject {
     
     // MARK:- Subscribers
     private var cancellable: AnyCancellable?
@@ -37,7 +37,6 @@ final class MovieObservable: ObservableObject {
     private func getMovies(_ movieFeed: MovieFeed) {
         cancellable = movieClient.getFeed(movieFeed)
             .sink(receiveCompletion: { _ in
-                // Here the actual subscriber is created. As mentioned earlier, the sink-subscriber comes with a closure, that lets us handle the received value when it’s ready from the publisher.
             },
                   receiveValue: {
                 self.movies = $0.results.map { MovieViewModel(movie: $0) }
