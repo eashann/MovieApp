@@ -14,7 +14,7 @@ enum SearchMovie {
 extension SearchMovie: Endpoint {
     
     var base: String {
-        return "https://api.themoviedb.org"
+        return themoviedb_base_url
     }
     
     var path: String {
