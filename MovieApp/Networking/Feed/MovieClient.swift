@@ -21,6 +21,6 @@ final class MovieClient: CombineAPI {
     }
     
     func getFeed(_ feedKind: MovieFeed) -> AnyPublisher<MovieFeedResult, Error> {
-        execute(feedKind.request, decodingType: MovieFeedResult.self, retries: 2)
+        execute(feedKind.movieFeedComponenet(), decodingType: MovieFeedResult.self, retries: 2)
     }
 }

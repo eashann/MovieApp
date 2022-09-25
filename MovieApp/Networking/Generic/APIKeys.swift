@@ -8,7 +8,6 @@
 import Foundation
 
 extension Endpoint {
-    
     var themoviedb_apiKey: String {
         if let path = Bundle.main.path(forResource: "Secrets", ofType: "plist"),
            let dict = NSDictionary(contentsOfFile: path),

@@ -7,7 +7,24 @@
 
 import Foundation
 
-extension Endpoint {
+enum SearchMovie {
+    case generic
+}
+
+extension SearchMovie: Endpoint {
+    
+    var base: String {
+        return "https://api.themoviedb.org"
+    }
+    
+    var path: String {
+        switch self {
+            case .generic: return "/3/search/movie"
+        }
+    }
+}
+
+extension SearchMovie {
     func searchRequestUsingComponenet(with query: String) -> URLRequest {
         var components = URLComponents(string: base)!
         components.path = path
