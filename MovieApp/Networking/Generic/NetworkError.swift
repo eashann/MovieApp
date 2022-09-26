@@ -7,7 +7,8 @@
 
 import Foundation
 
-enum APIError: Error {
+enum NetworkError: Error {
+    case unknown
     case invalidURL
     case requestFailed
     case jsonConversionFailure
@@ -22,6 +23,7 @@ enum APIError: Error {
         case .jsonParsingFailure: return "JSON Parsing Failure"
         case .jsonConversionFailure: return "JSON Conversion Failure"
         case .invalidURL: return "Invalid URL"
+        case .unknown: return "Something went wrong"
         }
     }
 }

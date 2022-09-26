@@ -79,7 +79,7 @@ final class ImageLoader: ObservableObject {
                       response.statusCode == 200,
                       let image = UIImage(data: $0.data)
                 else {
-                    throw APIError.responseUnsuccessful
+                    throw NetworkError.responseUnsuccessful
                 }
                 self.imageCache.setImageForKey(urlString, image: image)
                 return image

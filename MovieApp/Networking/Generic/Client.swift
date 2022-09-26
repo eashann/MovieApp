@@ -14,7 +14,7 @@ protocol CombineAPI {
                     decodingType: T.Type,
                     queue: DispatchQueue,
                     retries: Int) -> AnyPublisher<T, Error> where T: Decodable
-//    func perform<T: Decodable>(_ request: URLRequest, decodingType: T.Type, retries: Int) -> Future<[T], Error>
+    func performNetworkRequest<T: Decodable>(_ request: URLRequest, decodingType: T.Type, retries: Int) -> Future<T, Error>
 }
 
 extension CombineAPI {
@@ -27,7 +27,7 @@ extension CombineAPI {
         return session.dataTaskPublisher(for: request)
             .tryMap {
                 guard let response = $0.response as? HTTPURLResponse, response.statusCode == 200 else {
-                    throw APIError.responseUnsuccessful
+                    throw NetworkError.requestFailed
                 }
                 return $0.data
             }
@@ -37,26 +37,32 @@ extension CombineAPI {
             .eraseToAnyPublisher()
     }
     
-//    func perform<T: Decodable>(_ request: URLRequest, decodingType: T.Type, retries: Int) -> Future<[T], Error> {
-//        Future { promise in
-//            session.dataTaskPublisher(for: request)
-//                .tryMap { (data, response) -> Data in
-//                    guard let httpResponse = response as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
-//                        throw APIError.responseUnsuccessful
-//                    }
-//                    return data
-//                }
-//                .decode(type: [T].self, decoder: JSONDecoder())
-//                .receive(on: RunLoop.main)
-//                .sink { errorCompletion in
-//                    switch errorCompletion {
-//                    case .finished:
-//                        <#code#>
-//                    case .failure(_):
-//                        <#code#>
-//                    }
-//                } receiveValue: { promise(.success($0))}
-//
-//        }
-//    }
+    func performNetworkRequest<T: Decodable>(_ request: URLRequest, decodingType: T.Type, retries: Int) -> Future<T, Error> {
+        Future { promise in
+            var cancellables = Set<AnyCancellable>()
+            session.dataTaskPublisher(for: request)
+                .tryMap {
+                    guard let httpResponse = $0.response as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
+                        throw NetworkError.requestFailed
+                    }
+                    return $0.data
+                }
+                .decode(type: T.self, decoder: JSONDecoder())
+                .receive(on: RunLoop.main)
+                .retry(retries)
+                .sink { completion in
+                    if case let .failure(error) = completion {
+                        switch error {
+                        case let decodingError as DecodingError:
+                            promise(.failure(decodingError))
+                        case let apiError as NetworkError:
+                            promise(.failure(apiError))
+                        default:
+                            promise(.failure(NetworkError.unknown))
+                        }
+                    }
+                } receiveValue: { promise(.success($0)) }
+                .store(in: &cancellables)
+        }
+    }
 }
